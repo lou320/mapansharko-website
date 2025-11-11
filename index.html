@@ -3,222 +3,581 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Name - Model Portfolio</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts (Inter) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <title>Pan Sharr Ko</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
     <style>
-        /* Apply the Inter font family */
         body {
-            font-family: 'Inter', sans-serif;
+            background-color: #000000;
+            color: #f8f9fa;
+        }
+
+        .hero-section {
+            background-image: url('IMG_8897.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+            padding-top: 56px;
+        }
+
+        .hero-section h1 {
+            font-size: 4rem;
+            font-weight: bold;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
+        }
+
+        @media (max-width: 768px) {
+            .hero-section h1 {
+                font-size: 3rem;
+            }
+
+            .hero-section {
+                background-attachment: scroll;
+            }
+        }
+
+        /* Fade-in animation for sections */
+        .fade-in {
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+        }
+        
+        /* Navbar styles */
+        .navbar {
+            background-color: transparent;
+        }
+
+        .navbar .navbar-brand {
+            color: white !important;
+            font-size: 2rem !important;
+            font-weight: bold;
+        }
+
+        .navbar .navbar-toggler-icon {
+            filter: brightness(0) invert(1);
+        }
+
+        .navbar-toggler {
+            border: none !important;
+            box-shadow: none !important;
+        }
+
+        /* Offcanvas (mobile menu) styles */
+        .offcanvas-dark {
+            background-color: rgba(33, 37, 41, 0.7);
+            backdrop-filter: blur(10px);
+            color: white;
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        @media (max-width: 768px) {
+            .offcanvas {
+                width: 50vw !important;
+            }
+        }
+
+        @media (min-width: 992px) {
+            .offcanvas-dark {
+                background-color: transparent;
+                backdrop-filter: none;
+                border-left: none;
+            }
+        }
+        
+        .offcanvas-dark .btn-close {
+            filter: brightness(0) invert(1);
+        }
+
+        .offcanvas-dark .nav-link {
+            color: white !important;
+            font-size: 1.2rem;
+            transition: color 0.3s ease;
+        }
+
+        .offcanvas-dark .nav-link:hover {
+            color: #adb5bd !important;
+        }
+
+        /* Portfolio Carousel styles */
+        #portfolio .carousel-item img {
+            height: 65vh;
+            object-fit: cover;
+            border-radius: 0.5rem;
+        }
+
+        @media (min-width: 768px) {
+            #portfolio .carousel-item img {
+                height: 75vh;
+            }
+        }
+
+        .carousel-dark .carousel-caption {
+            color: #212529;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 0.25rem;
+            padding: 1rem;
+        }
+
+        /* Form styles */
+        .form-control {
+            background-color: #212529;
+            color: white;
+            border: 1px solid #495057;
+        }
+
+        .form-control:focus {
+            background-color: #343a40;
+            color: white;
+            border-color: #adb5bd;
+            box-shadow: none;
+        }
+
+        .form-label {
+            color: #adb5bd;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: #1a1a1a;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 3rem 0 1rem;
+            margin-top: 5rem;
+            color: #adb5bd;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h5 {
+            color: white;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .footer-section p {
+            margin: 0;
+            font-size: 0.95rem;
+        }
+
+        .footer-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-links a {
+            color: #adb5bd;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: #007bff;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(0, 123, 255, 0.1);
+            border-radius: 50%;
+            color: #007bff;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .social-link:hover {
+            background-color: #007bff;
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 0.9rem;
+        }
+
+        /* Collaborations Carousel */
+        .collaborations-section {
+            background-color: #000000;
+            padding: 4rem 0;
+            margin: 3rem 0;
+        }
+
+        .collaborations-section h3 {
+            font-size: 2rem;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 2rem;
+        }
+
+        .collaborations-carousel {
+            overflow: hidden;
+            position: relative;
+        }
+
+        .collaborations-inner {
+            display: flex;
+            gap: 2rem;
+            overflow-x: auto;
             scroll-behavior: smooth;
+            padding: 2rem 0;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
         }
-        /* Simple scrollbar styling */
-        ::-webkit-scrollbar {
-            width: 8px;
+
+        /* Hide scrollbar but keep functionality */
+        .collaborations-inner::-webkit-scrollbar {
+            height: 6px;
         }
-        ::-webkit-scrollbar-track {
-            background: #f1f5f9; /* Light gray track */
+
+        .collaborations-inner::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
         }
-        ::-webkit-scrollbar-thumb {
-            background: #94a3b8; /* Grayer thumb */
-            border-radius: 4px;
+
+        .collaborations-inner::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
         }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #64748b;
+
+        .collaborations-inner::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .collab-item {
+            flex: 0 0 140px;
+            height: 140px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #1a1a1a;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            scroll-snap-align: center;
+            overflow: hidden;
+        }
+
+        .collab-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .collab-item:hover {
+            transform: translateY(-5px);
+            border-color: rgba(0, 123, 255, 0.5);
+            box-shadow: 0 8px 24px rgba(0, 123, 255, 0.2);
+        }
+
+        .collab-item:hover img {
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 768px) {
+            .collaborations-section {
+                padding: 2rem 0;
+                margin: 2rem 0;
+            }
+
+            .collaborations-section h3 {
+                font-size: 1.5rem;
+            }
+
+            .collab-item {
+                flex: 0 0 110px;
+                height: 110px;
+            }
         }
     </style>
 </head>
-<body class="bg-white text-gray-800 antialiased">
-
-    <!-- Header & Navigation -->
-    <header class="sticky top-0 bg-white/90 backdrop-blur-md shadow-sm z-10">
-        <div class="container mx-auto max-w-6xl px-6 py-4 flex justify-between items-center">
-            <h1 class="text-3xl font-bold text-gray-900">
-                <a href="#">Pan Sharr Ko</a>
-            </h1>
-            <nav id="mobile-menu" class="hidden md:flex flex-col md:flex-row md:space-x-8 space-y-4 md:space-y-0 absolute md:relative top-full left-0 w-full bg-white/90 backdrop-blur-md shadow-md py-4 px-6 md:p-0 md:shadow-none md:w-auto md:bg-transparent z-20">
-                <a href="#portfolio" class="text-gray-600 hover:text-gray-900 transition duration-300 block">Portfolio</a>
-                <a href="#about" class="text-gray-600 hover:text-gray-900 transition duration-300 block">About</a>
-                <a href="#contact" class="text-gray-600 hover:text-gray-900 transition duration-300 block">Contact</a>
-            </nav>
-            <!-- Mobile Menu Button -->
-            <button id="mobile-menu-button" class="md:hidden text-gray-700">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
-            </button>
+<body>
+    <!-- Navigation Bar -->
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="index.html">Portfolio</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="offcanvas offcanvas-end offcanvas-dark" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+            <div class="offcanvas-header">
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+                <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="gallery.html">Gallery</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contact.html">Contact</a>
+                    </li>
+                </ul>
+            </div>
         </div>
-    </header>
+    </div>
+</nav>
 
-    <!-- Main Content Container -->
-    <div class="container mx-auto max-w-6xl px-6 py-12 md:py-20">
 
-        <!-- Portfolio Gallery Section -->
-        <section id="portfolio" class="mb-20">
-            <h2 class="text-4xl font-bold text-center text-gray-900 mb-12">Born to stand out</h2>
-            
-            <!-- Image Grid -->
-            <div class="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
-
-                <!-- Image 1 -->
-                <div class="rounded-lg overflow-hidden shadow-lg transform hover:scale-105 transition-transform duration-300">
-                    <img src="IMG_4885.JPG" alt="Portfolio Image 1" class="w-full h-full object-cover">
-                </div>
-                
-                <!-- Image 2 -->
-                <div class="rounded-lg overflow-hidden shadow-lg transform hover:scale-105 transition-transform duration-300">
-                    <img src="IMG_8897.jpeg" alt="Portfolio Image 2" class="w-full h-full object-cover">
-                </div>
-
-                <!-- Image 3 -->
-                <div class="rounded-lg overflow-hidden shadow-lg transform hover:scale-105 transition-transform duration-300">
-                    <img src="IMG_5273.JPG" alt="Portfolio Image 3" class="w-full h-full object-cover">
-                </div>
-
-                <!-- Image 4 -->
-                <div class="rounded-lg overflow-hidden shadow-lg transform hover:scale-105 transition-transform duration-300">
-                    <img src="IMG_4889.JPG" alt="Portfolio Image 3" class="w-full h-full object-cover">
-                </div>
-                
-                <!-- Video Section 5 -->
-                <div class="col-span-2 md:col-span-2 rounded-lg overflow-hidden shadow-lg aspect-video">
-                    <iframe id="portfolio-video" class="w-full h-full object-cover"
-                        src="https://www.youtube.com/embed/UlCS_ff4do4?autoplay=1&mute=1&controls=0&loop=1&playlist=UlCS_ff4do4"
-                        frameborder="0" allow="autoplay; encrypted-media">
-                    </iframe>
-                    <!-- <iframe id="portfolio-video" class="w-full h-full object-cover" src="https://www.youtube.com/embed/UlCS_ff4do4?autoplay=1&mute=1&controls=0&loop=1&playlist=UlCS_ff4do4" frameborder="0" allow="autoplay; encrypted-media">
-                    </iframe> -->
-                    <!-- <iframe id="portfolio-video" controls muted playsinline class="w-full h-full object-cover" src="https://drive.google.com/file/d/1JfBQa0ZYLkyHyFLxtnXZ9rJU6zWV0-uJ/preview" allow="autoplay"></iframe> -->
-                    <!-- <video id="portfolio-video" controls muted playsinline class="w-full h-full object-cover">
-                        <source src="https://drive.google.com/file/d/1vOZzUDDUxc9_absIJ1YrzDBnzcIC90gD/preview" type="video/mp4">
-                        Your browser does not support the video tag.
-                    </video> -->
-                </div>
-                
-                <!-- Image 6 -->
-                <div class="rounded-lg overflow-hidden shadow-lg transform hover:scale-105 transition-transform duration-300">
-                    <img src="IMG_4883.JPG" alt="Portfolio Image 5" class="w-full h-full object-cover">
-                </div>
-
-                <!-- Image 7 -->
-                <div class="rounded-lg overflow-hidden shadow-lg transform hover:scale-105 transition-transform duration-300">
-                    <img src="IMG_0217.jpeg" alt="Portfolio Image 6" class="w-full h-full object-cover">
-                </div>  
-
-            </div>
-        </section>
-
-        <!-- About & Stats Section -->
-        <section id="about" class="mb-20 py-12 bg-gray-50 rounded-lg">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 px-6 md:px-12">
-                <!-- About Me -->
-                <div class="md:col-span-2">
-                    <h2 class="text-3xl font-bold text-gray-900 mb-6 border-b-2 border-blue-500 pb-2 inline-block">About Me</h2>
-                    <div class="text-gray-700 space-y-4 text-lg">
-                        <p>
-                            I am a dynamic individual who believes in the power of self expression through art, fashion, and photography. With a captivating presence and a natural flair for the camera.”                        </p>
-                        <p>
-                            My journey in modeling has been fueled by a passion for creativity and a desire to inspire others. I thrive in collaborative environments and am always eager to explore new concepts and styles.
-                        </p>
-                    </div>
-                </div>
-                <!-- Stats -->
-                <div>
-                    <h3 class="text-2xl font-bold text-gray-900 mb-6 border-b-2 border-blue-500 pb-2 inline-block">Stats</h3>
-                    <ul class="text-gray-700 space-y-2 text-lg">
-                        <li><strong>Height:</strong> 5' 5" / 165 cm</li>
-                        <li><strong>Bust:</strong> 34" / 86 cm</li>
-                        <li><strong>Waist:</strong> 25" / 64 cm</li>
-                        <li><strong>Hips:</strong> 36" / 91 cm</li>
-                        <li><strong>Shoe:</strong> 7.5 US / 38 EU</li>
-                        <li><strong>Hair:</strong> Black</li>
-                        <li><strong>Eyes:</strong> Dark Brown</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <!-- Contact Section -->
-        <section id="contact" class="text-center">
-            <h2 class="text-3xl font-bold text-gray-900 mb-6">Get In Touch</h2>
-            <p class="text-gray-600 text-xl mb-8 max-w-lg mx-auto">
-                For bookings and collaborations, please contact my agency or send me an email.
-            </p>
-            <div class="flex flex-col sm:flex-row justify-center items-center gap-6">
-                <a href="mailto:your.email@example.com"
-                   class="inline-block bg-gray-800 text-white font-bold text-lg px-8 py-4 rounded-lg shadow-lg hover:bg-gray-900 transition-colors duration-300 transform hover:scale-105">
-                    Email Me
-                </a>
-                <a href="#"
-                   class="inline-block bg-blue-500 text-white font-bold text-lg px-8 py-4 rounded-lg shadow-lg hover:bg-blue-600 transition-colors duration-300 transform hover:scale-105">
-                    Contact Me
-                </a>
-            </div>
-        </section>
-        
+    <div class="hero-section">
+        <div>
+            <h1>Pan Sharr Ko</h1>
+            <p class="lead">Model | Influencer</p>
+        </div>
     </div>
 
-    <!-- Footer -->
-    <footer class="text-center py-10 mt-20 border-t border-gray-200">
-        <div class="flex justify-center space-x-6 mb-4">
-            <!-- Instagram Icon -->
-            <a href="#" class="text-gray-500 hover:text-gray-900 transition duration-300" title="Instagram">
-                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12 2c-2.717 0-3.056.01-4.122.06-1.065.05-1.79.22-2.428.46-1.29.5-2.292 1.5-2.79 2.79-.24 1.25-.41 1.95-.46 4.12-.05 1.07-.06 1.4-.06 4.12s.01 3.05.06 4.12c.05 2.17.22 2.87.46 4.12.5 1.29 1.5 2.29 2.79 2.79 1.25.24 1.95.41 4.12.46 1.07.05 1.4.06 4.12.06s3.05-.01 4.12-.06c2.17-.05 2.87-.22 4.12-.46 1.29-.5 2.29-1.5 2.79-2.79.24-1.25.41-1.95.46-4.12.05-1.07.06-1.4.06-4.12s-.01-3.05-.06-4.12c-.05-2.17-.22-2.87-.46-4.12-.5-1.29-1.5-2.29-2.79-2.79-1.25-.24-1.95-.41-4.12-.46C15.056 2.01 14.717 2 12 2zm0 1.8c2.67 0 2.98.01 4.04.06 1.03.05 1.63.21 2.1.4.75.28 1.3.73 1.85 1.28.56.56 1 1.1 1.28 1.85.19.47.35 1.07.4 2.1.05 1.06.06 1.37.06 4.04s-.01 2.98-.06 4.04c-.05 1.03-.21 1.63-.4 2.1-.28.75-.73 1.3-1.28 1.85-.56.56-1.1 1-1.85 1.28-.47.19-1.07.35-2.1.4-1.06.05-1.37.06-4.04.06s-2.98-.01-4.04-.06c-1.03-.05-1.63-.21-2.1-.4-.75-.28-1.3-.73-1.85-1.28-.56-.56-1-1.1-1.28-1.85-.19-.47-.35-1.07-.4-2.1-.05-1.06-.06-1.37-.06-4.04s.01-2.98.06-4.04c.05-1.03.21-1.63.4-2.1.28-.75.73-1.3 1.28-1.85.56-.56 1.1-1 1.85-1.28.47-.19 1.07-.35 2.1-.4 1.06-.05 1.37-.06 4.04-.06zm0 4.2c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm0 6.4c-1.32 0-2.4-1.08-2.4-2.4s1.08-2.4 2.4-2.4 2.4 1.08 2.4 2.4-1.08 2.4-2.4 2.4zm5.1-6.5c-.66 0-1.2.54-1.2 1.2s.54 1.2 1.2 1.2 1.2-.54 1.2-1.2-.54-1.2-1.2-1.2z" clip-rule="evenodd" /></svg>
-            </a>
-            <!-- TikTok or other social icon -->
-            <a href="#" class="text-gray-500 hover:text-gray-900 transition duration-300" title="TikTok">
-                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M12.53.02C13.17 0 13.8.04 14.4.1l.05.02c.56.09 1.1.22 1.63.42.5.18.98.4 1.43.68.45.28.88.6 1.28.97.4.37.77.78 1.1 1.23.34.45.64.93.9 1.44.26.5.48 1.03.66 1.57l.02.05c.09.56.13 1.19.13 1.83v.12c0 .43-.01.86-.03 1.28-.02.43-.05.85-.1 1.26-.05.42-.11.83-.19 1.23-.08.4-.18.78-.3 1.15-.12.37-.26.73-.42 1.07-.16.34-.34.67-.54 1-.2.32-.42.63-.67.92-.25.29-.52.56-.81.81-.29.25-.6.48-.92.68-.32.2-.66.38-1.02.53-.36.15-.74.28-1.13.39-.39.11-.8.2-1.22.28l-.05.01c-.58.09-1.17.13-1.77.13h-.03c-.63 0-1.25-.04-1.85-.13l-.05-.01c-.58-.09-1.15-.22-1.7-.42-.54-.19-1.06-.43-1.55-.73-.49-.3-.95-.65-1.38-1.04-.42-.39-.82-.82-1.17-1.3-.35-.48-.66-1-close-.92-1.54-.26-.54-.5-1.07-.7-1.57l-.02-.05c-.09-.56-.13-1.19-.13-1.83v-.12c0-.43.01-.86.03-1.28.02-.43.05-.85.1-1.26.05-.42.11-.83.19-1.23.08-.4.18-.78.3-1.15.12-.37.26-.73.42-1.07.16-.34.34-.67.54 1 .2-.32.42-.63.67-.92.25-.29.52-.56.81-.81.29-.25.6-.48.92-.68.32-.2.66-.38 1.02-.53.36-.15.74-.28 1.13-.39.39-.11.8-.2 1.22-.28l.05-.01c.58-.09 1.17-.13 1.77-.13h.03zM10 15.2v-6.4c0-1.77 1.43-3.2 3.2-3.2h.1c1.1 0 2.1.56 2.7 1.45.6 1.1.6 2.4 0 3.5-.6.9-1.6 1.45-2.7 1.45h-3.3z"/></svg>
-            </a>
+    <div id="portfolio" class="container my-5 fade-in" style="margin-bottom: 2rem !important;">
+        <div id="carouselExampleDark" class="carousel carousel-dark slide carousel-fade" data-bs-ride="carousel">
+            <br><br><br>
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            </div>
+            <div class="carousel-inner">
+                <div class="carousel-item active" data-bs-interval="2000">
+                    <img src="1.png" class="d-block w-100" alt="Portfolio Image 1">
+                    
+                </div>
+                <div class="carousel-item" data-bs-interval="2000">
+                    <img src="2.png" class="d-block w-100" alt="Portfolio Image 2">
+                    
+                </div>
+                <div class="carousel-item" data-bs-interval="2000">
+                    <img src="3.png" class="d-block w-100" alt="Portfolio Image 3">
+                    
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
         </div>
-        <p class="text-gray-500">&copy; 2025 Pan Sharr Ko. All rights reserved.</p>
-    </footer>
+    </div>
+
+    <div id="about" class="container fade-in">
+        <div class="row">
+            <div class="col-md-8 offset-md-2 text-center">
+                <p class="lead">I am a passionate and creative individual with a love for fashion, beauty, and lifestyle.</p>
+                <a href="gallery.html"><button type="button" class="btn btn-dark">See My Full Gallery</button></a> 
+            </div>
+        </div>
+    </div>
+
+    <!-- Collaborations Carousel -->
+    <!-- <div class="collaborations-section fade-in">
+        <div class="container">
+            <h3 class="text-center mb-5">Collaborated With</h3>
+            <div class="collaborations-carousel">
+                <div class="collaborations-inner">
+                    <div class="collab-item">
+                        <img src="7d0ecd49047677.58a9cd0803834.webp" alt="Brand 1">
+                    </div>
+                    <div class="collab-item">
+                        <img src="7d0ecd49047677.58a9cd0803834.webp" alt="Brand 2">
+                    </div>
+                    <div class="collab-item">
+                        <img src="7d0ecd49047677.58a9cd0803834.webp" alt="Brand 3">
+                    </div>
+                    <div class="collab-item">
+                        <img src="7d0ecd49047677.58a9cd0803834.webp" alt="Brand 4">
+                    </div>
+                    <div class="collab-item">
+                        <img src="7d0ecd49047677.58a9cd0803834.webp" alt="Brand 5">
+                    </div>
+                    <div class="collab-item">
+                        <img src="7d0ecd49047677.58a9cd0803834.webp" alt="Brand 6">
+                    </div>
+                    <div class="collab-item">
+                        <img src="7d0ecd49047677.58a9cd0803834.webp" alt="Brand 7">
+                    </div>
+                    <div class="collab-item">
+                        <img src="7d0ecd49047677.58a9cd0803834.webp" alt="Brand 8">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> -->
+
+    <!-- Footer Placeholder -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    
+    <!-- Component Loader -->
+    <script src="./init.js"></script>
 
     <script>
-        // Mobile Menu Toggle
-        const menuButton = document.getElementById('mobile-menu-button');
-        const menu = document.getElementById('mobile-menu');
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                
+                if (href === '#') {
+                    return;
+                }
 
-        menuButton.addEventListener('click', () => {
-            menu.classList.toggle('hidden');
-        });
+                const target = document.querySelector(href);
+                if (!target) {
+                    return;
+                }
 
-        // Close menu when a navigation link is clicked on mobile
-        const navLinks = menu.querySelectorAll('a');
-        navLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                if (window.innerWidth < 768) { // 768px is Tailwind's 'md' breakpoint
-                    menu.classList.add('hidden');
+                e.preventDefault();
+
+                target.scrollIntoView({
+                    behavior: 'smooth'
+                });
+                
+                // Close offcanvas if open
+                const offcanvas = this.closest('.offcanvas');
+                if (offcanvas) {
+                    const bsOffcanvas = new bootstrap.Offcanvas(offcanvas);
+                    bsOffcanvas.hide();
                 }
             });
         });
 
-        // Autoplay video on scroll
-        const video = document.getElementById('portfolio-video');
-        let hasPlayed = false;
+        // Fade-in sections on scroll
+        const faders = document.querySelectorAll('.fade-in');
+        const appearOptions = {
+            threshold: 0.5,
+        };
 
-        function isElementInViewport(el) {
-            if (!el) return false;
-            const rect = el.getBoundingClientRect();
-            return (
-                rect.top < window.innerHeight && rect.bottom >= 0
-            );
-        }
+        const appearOnScroll = new IntersectionObserver(function(entries, appearOnScroll) {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) {
+                    return;
+                } else {
+                    entry.target.classList.add('visible');
+                    appearOnScroll.unobserve(entry.target);
+                }
+            });
+        }, appearOptions);
 
-        function onScroll() {
-            if (!hasPlayed && isElementInViewport(video)) {
-                video.play().catch(error => {
-                    console.error("Video autoplay failed:", error);
-                });
-                hasPlayed = true;
+        faders.forEach(fader => {
+            appearOnScroll.observe(fader);
+            // Trigger immediately if already in view
+            if (fader.getBoundingClientRect().top < window.innerHeight) {
+                fader.classList.add('visible');
             }
+        });
+
+        // Navbar background on scroll
+        const nav = document.querySelector('.navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                nav.classList.add('navbar-scrolled');
+            } else {
+                nav.classList.remove('navbar-scrolled');
+            }
+        });
+
+        // --- SCROLL JUMP LOGIC ---
+        const carouselJumpTarget = document.getElementById('carouselExampleDark'); 
+        const heroSection = document.querySelector('.hero-section');
+        
+        let lastScrollY = window.scrollY;
+        let isJumpTargetVisible = false;
+        let isHeroVisible = true;
+        let hasJumpedToTop = false;
+        let hasJumpedToCarousel = false;
+        let isJumping = false; 
+
+        const observerOptions = {
+            threshold: 0.5
+        };
+
+        const carouselObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                isJumpTargetVisible = entry.isIntersecting;
+                if (isJumpTargetVisible) {
+                    hasJumpedToTop = false;
+                }
+            });
+        }, observerOptions);
+
+        const heroObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                isHeroVisible = entry.isIntersecting;
+                if (isHeroVisible) {
+                    hasJumpedToCarousel = false;
+                }
+            });
+        }, observerOptions);
+
+        if (carouselJumpTarget) {
+            carouselObserver.observe(carouselJumpTarget);
+        }
+        if (heroSection) {
+            heroObserver.observe(heroSection);
         }
 
-        window.addEventListener('scroll', onScroll);
-        // Also run on load, in case the video is already in view
-        onScroll();
-    </script>
+        window.addEventListener('scroll', () => {
+            if (!carouselJumpTarget || !heroSection || isJumping) return; 
 
+            const currentScrollY = window.scrollY;
+            const scrollingDown = currentScrollY > lastScrollY;
+            const scrollingUp = currentScrollY < lastScrollY;
+
+            if (Math.abs(currentScrollY - lastScrollY) < 10) {
+                 lastScrollY = currentScrollY < 0 ? 0 : currentScrollY;
+                 return;
+            }
+
+            if (scrollingDown && isHeroVisible && !hasJumpedToCarousel) {
+                isJumping = true;
+                carouselJumpTarget.scrollIntoView({ behavior: 'smooth' });
+                hasJumpedToCarousel = true; 
+                setTimeout(() => { isJumping = false; }, 1000);
+            } else if (scrollingUp && isJumpTargetVisible && !hasJumpedToTop) {
+                isJumping = true;
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                hasJumpedToTop = true;
+                setTimeout(() => { isJumping = false; }, 1000);
+            }
+            
+            lastScrollY = currentScrollY < 0 ? 0 : currentScrollY;
+        });
+    </script>
 </body>
 </html>

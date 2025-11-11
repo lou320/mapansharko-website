@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery - Pan Sharr Ko</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    <style>
+        body {
+            background-color: #202020;
+            color: #f8f9fa;
+        }
+
+        /* Navbar styles */
+        .navbar {
+            background-color: transparent;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .navbar .navbar-brand {
+            color: white !important;
+            font-size: 2rem !important;
+            font-weight: bold;
+        }
+
+        .navbar .navbar-toggler-icon {
+            filter: brightness(0) invert(1);
+        }
+
+        .navbar-toggler {
+            border: none !important;
+            box-shadow: none !important;
+        }
+
+        /* Offcanvas (mobile menu) styles */
+        .offcanvas-dark {
+            background-color: rgba(33, 37, 41, 0.7);
+            backdrop-filter: blur(10px);
+            color: white;
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Limit offcanvas width to 50% on mobile */
+        @media (max-width: 768px) {
+            .offcanvas {
+                width: 50vw !important;
+            }
+        }
+
+        .offcanvas-dark .btn-close {
+            filter: brightness(0) invert(1);
+        }
+
+        .offcanvas-dark .nav-link {
+            color: white !important;
+            font-size: 1.2rem;
+            transition: color 0.3s ease;
+        }
+
+        .offcanvas-dark .nav-link:hover {
+            color: #adb5bd !important;
+        }
+
+        /* Page Title */
+        .page-title {
+            text-align: center;
+            padding: 4rem 0 2rem;
+            margin-bottom: 3rem;
+            margin-top: 3rem;
+        }
+
+        .page-title h1 {
+            font-size: 3.5rem;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+        }
+
+        .page-title p {
+            font-size: 1.2rem;
+            color: #adb5bd;
+        }
+
+        @media (max-width: 768px) {
+            .page-title h1 {
+                font-size: 2.5rem;
+            }
+
+            .page-title p {
+                font-size: 1rem;
+            }
+        }
+
+        /* Gallery Container */
+        .gallery-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Collaboration Section Styles */
+        .collaboration-section {
+            margin-bottom: 4rem;
+            padding: 2rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .collaboration-header {
+            margin-bottom: 2.5rem;
+        }
+
+        .collaboration-title {
+            font-size: 2rem;
+            font-weight: bold;
+            color: white;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .collaboration-title::before {
+            content: '';
+            width: 4px;
+            height: 30px;
+            background: linear-gradient(180deg, #007bff, rgba(0, 123, 255, 0.3));
+            border-radius: 2px;
+        }
+
+        .collaboration-subtitle {
+            font-size: 0.95rem;
+            color: #adb5bd;
+            margin: 0.5rem 0 0 0;
+        }
+
+        /* Carousel Container */
+        .collaboration-carousel {
+            overflow: hidden;
+            position: relative;
+        }
+
+        .carousel-inner {
+            display: flex;
+            gap: 1.5rem;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            padding: 0.5rem 0;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+        }
+
+        .carousel-inner::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        .carousel-inner::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+
+        .carousel-inner::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+        }
+
+        .carousel-inner::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Gallery Item */
+        .gallery-item {
+            flex: 0 0 280px;
+            height: 400px;
+            position: relative;
+            overflow: hidden;
+            border-radius: 0.75rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            background-color: #212529;
+            scroll-snap-align: center;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 12px 40px rgba(0, 123, 255, 0.3);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            display: block;
+            transition: transform 0.3s ease;
+            object-fit: cover;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.08);
+        }
+
+        .gallery-item-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.8) 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 1.5rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .gallery-item:hover .gallery-item-overlay {
+            opacity: 1;
+        }
+
+        .gallery-item-title {
+            color: white;
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 0.3rem;
+        }
+
+        .gallery-item-description {
+            color: #adb5bd;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .gallery-item {
+                flex: 0 0 240px;
+                height: 350px;
+            }
+
+            .collaboration-title {
+                font-size: 1.75rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .collaboration-section {
+                margin-bottom: 3rem;
+                padding: 1.5rem 0;
+            }
+
+            .collaboration-title {
+                font-size: 1.5rem;
+            }
+
+            .collaboration-subtitle {
+                font-size: 0.85rem;
+            }
+
+            .gallery-item {
+                flex: 0 0 220px;
+                height: 320px;
+            }
+
+            .carousel-inner {
+                gap: 1rem;
+            }
+
+            .gallery-item-title {
+                font-size: 1rem;
+            }
+
+            .gallery-item-description {
+                font-size: 0.85rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .page-title h1 {
+                font-size: 2rem;
+            }
+
+            .page-title p {
+                font-size: 0.95rem;
+            }
+
+            .collaboration-title {
+                font-size: 1.25rem;
+            }
+
+            .collaboration-subtitle {
+                font-size: 0.8rem;
+            }
+
+            .gallery-item {
+                flex: 0 0 180px;
+                height: 280px;
+            }
+
+            .carousel-inner {
+                gap: 0.75rem;
+                padding: 0.25rem 0;
+            }
+
+            .gallery-item-title {
+                font-size: 0.95rem;
+                margin-bottom: 0.2rem;
+            }
+
+            .gallery-item-description {
+                font-size: 0.8rem;
+            }
+
+            .gallery-item-overlay {
+                padding: 1rem;
+            }
+        }
+
+        /* Fade-in animation */
+        .fade-in {
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            background-color: #212529;
+            border-radius: 0.5rem;
+            color: #adb5bd;
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            color: #495057;
+            margin-bottom: 1rem;
+        }
+
+        /* Lightbox Modal */
+        .lightbox-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: transparent;
+            backdrop-filter: blur(0px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            transition: backdrop-filter 0.3s ease;
+        }
+
+        .lightbox-modal.active {
+            display: flex;
+            backdrop-filter: blur(8px);
+        }
+
+        .lightbox-content {
+            position: relative;
+            max-width: 90%;
+            max-height: 90vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .lightbox-content img {
+            max-width: 100%;
+            max-height: 85vh;
+            object-fit: contain;
+        }
+
+        .lightbox-close {
+            display: none;
+        }
+
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 18px;
+            color: white;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+            z-index: 1001;
+        }
+
+        .lightbox-nav:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+
+        .lightbox-nav.prev {
+            left: 20px;
+        }
+
+        .lightbox-nav.next {
+            right: 20px;
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid #343a40;
+            color: #adb5bd;
+            margin-top: 4rem;
+            padding-top: 3rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="index.html">Pan Sharr Ko</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="offcanvas offcanvas-end offcanvas-dark" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+            <div class="offcanvas-header">
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+                <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="gallery.html">Gallery</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contact.html">Contact</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>
+
+
+    <!-- Gallery Container -->
+    <div class="gallery-container fade-in" style="margin-top: 2rem;">
+        
+        <!-- Collaboration Section 1: Dior -->
+        <div class="collaboration-section">
+            <div class="collaboration-header">
+                <h2 class="collaboration-title">Collaboration With Dior</h2>
+                <p class="collaboration-subtitle">Luxury Fashion Editorial Campaign</p>
+            </div>
+            <div class="collaboration-carousel">
+                <div class="carousel-inner" id="dior-carousel">
+                    <div class="gallery-item">
+                        <img src="IMG_4883.JPG" alt="Dior Collaboration 1">
+                        <!-- <div class="gallery-item-overlay">
+                            <div class="gallery-item-title">.*</div>
+                            <div class="gallery-item-description">.*</div>
+                        </div> -->
+                    </div>
+                    <div class="gallery-item">
+                        <img src="IMG_4884.JPG" alt="Dior Collaboration 2">
+                        
+                    </div>
+                    <div class="gallery-item">
+                        <img src="IMG_4885.JPG" alt="Dior Collaboration 3">
+                        
+                    </div>
+                    <div class="gallery-item">
+                        <img src="IMG_4889.JPG" alt="Dior Collaboration 4">
+                        
+                    </div>
+                    <div class="gallery-item">
+                        <img src="IMG_4883.JPG" alt="Dior Collaboration 1">
+                        
+                    </div>
+                    <div class="gallery-item">
+                        <img src="IMG_4884.JPG" alt="Dior Collaboration 2">
+                        
+                    </div>
+                    <div class="gallery-item">
+                        <img src="IMG_4885.JPG" alt="Dior Collaboration 3">
+                        
+                    </div>
+                    <div class="gallery-item">
+                        <img src="IMG_4889.JPG" alt="Dior Collaboration 4">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Collaboration Section 2: Gucci -->
+        <div class="collaboration-section">
+            <div class="collaboration-header">
+                <h2 class="collaboration-title">Collaboration With Gucci</h2>
+                <p class="collaboration-subtitle">Contemporary Fashion Collection</p>
+            </div>
+            <div class="collaboration-carousel">
+                <div class="carousel-inner" id="gucci-carousel">
+                    <div class="gallery-item">
+                        <img src="IMG_5273.JPG" alt="Gucci Collaboration 1">
+                        
+                    </div>
+                    <div class="gallery-item">
+                        <img src="1.png" alt="Gucci Collaboration 2">
+                        
+                    </div>
+                    <div class="gallery-item">
+                        <img src="2.png" alt="Gucci Collaboration 3">
+                        
+                    </div>
+                    <div class="gallery-item">
+                        <img src="3.png" alt="Gucci Collaboration 4">
+                        
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+
+        <!-- Collaboration Section 3: Chanel -->
+        <div class="collaboration-section">
+            <div class="collaboration-header">
+                <h2 class="collaboration-title">Collaboration With Chanel</h2>
+                <p class="collaboration-subtitle">Premium Brand Experience</p>
+            </div>
+            <div class="collaboration-carousel">
+                <div class="carousel-inner" id="chanel-carousel">
+                    <div class="gallery-item">
+                        <img src="IMG_4883.JPG" alt="Chanel Collaboration 1">
+                        
+                    </div>
+                    <div class="gallery-item">
+                        <img src="IMG_4885.JPG" alt="Chanel Collaboration 2">
+                        
+                    </div>
+                    <div class="gallery-item">
+                        <img src="IMG_5273.JPG" alt="Chanel Collaboration 3">
+                        
+                    </div>
+                    <div class="gallery-item">
+                        <img src="1.png" alt="Chanel Collaboration 4">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Collaboration Section 4: Versace -->
+        <div class="collaboration-section">
+            <div class="collaboration-header">
+                <h2 class="collaboration-title">Collaboration With Versace</h2>
+                <p class="collaboration-subtitle">Bold and Vibrant Campaigns</p>
+            </div>
+            <div class="collaboration-carousel">
+                <div class="carousel-inner" id="versace-carousel">
+                    <div class="gallery-item">
+                        <img src="2.png" alt="Versace Collaboration 1">
+                        
+                    </div>
+                    <div class="gallery-item">
+                        <img src="3.png" alt="Versace Collaboration 2">
+                        
+                    </div>
+                    <div class="gallery-item">
+                        <img src="IMG_4884.JPG" alt="Versace Collaboration 3">
+                        
+                    </div>
+                    <div class="gallery-item">
+                        <img src="IMG_4889.JPG" alt="Versace Collaboration 4">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Lightbox Modal -->
+    <div class="lightbox-modal" id="lightboxModal">
+        <button class="lightbox-close" id="lightboxClose">&times;</button>
+        <button class="lightbox-nav prev" id="lightboxPrev">&#10094;</button>
+        <div class="lightbox-content">
+            <img id="lightboxImage" src="" alt="Full view">
+        </div>
+        <button class="lightbox-nav next" id="lightboxNext">&#10095;</button>
+    </div>
+
+    <footer class="text-center py-4" style="margin-top: 0rem;">
+        <p>&copy; Web Design By Thuta</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    
+    <script>
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                if (this.closest('.offcanvas')) {
+                    // This will be handled by data-bs-dismiss="offcanvas"
+                } else {
+                    e.preventDefault();
+                }
+
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Fade-in sections on scroll
+        const faders = document.querySelectorAll('.fade-in');
+        const appearOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px 0px 0px'
+        };
+
+        const appearOnScroll = new IntersectionObserver(function(entries, appearOnScroll) {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) {
+                    return;
+                } else {
+                    entry.target.classList.add('visible');
+                    appearOnScroll.unobserve(entry.target);
+                }
+            });
+        }, appearOptions);
+
+        faders.forEach(fader => {
+            appearOnScroll.observe(fader);
+            // Trigger immediately if already in view
+            if (fader.getBoundingClientRect().top < window.innerHeight) {
+                fader.classList.add('visible');
+            }
+        });
+
+        // Wait for DOM to be fully loaded
+        function initializeGallery() {
+            // Smooth scroll for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    if (this.closest('.offcanvas')) {
+                        // This will be handled by data-bs-dismiss="offcanvas"
+                    } else {
+                        e.preventDefault();
+                    }
+
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+
+            // Fade-in sections on scroll
+            const faders = document.querySelectorAll('.fade-in');
+            const appearOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px 0px 0px'
+            };
+
+            const appearOnScroll = new IntersectionObserver(function(entries, appearOnScroll) {
+                entries.forEach(entry => {
+                    if (!entry.isIntersecting) {
+                        return;
+                    } else {
+                        entry.target.classList.add('visible');
+                        appearOnScroll.unobserve(entry.target);
+                    }
+                });
+            }, appearOptions);
+
+            faders.forEach(fader => {
+                appearOnScroll.observe(fader);
+                // Trigger immediately if already in view
+                if (fader.getBoundingClientRect().top < window.innerHeight) {
+                    fader.classList.add('visible');
+                }
+            });
+
+            // Lightbox functionality
+            const lightboxModal = document.getElementById('lightboxModal');
+            const lightboxImage = document.getElementById('lightboxImage');
+            const lightboxClose = document.getElementById('lightboxClose');
+            const lightboxPrev = document.getElementById('lightboxPrev');
+            const lightboxNext = document.getElementById('lightboxNext');
+            let currentImageIndex = 0;
+            let allImages = [];
+            let currentCarouselImages = [];
+
+            // Get all gallery images
+            function initLightbox() {
+                allImages = Array.from(document.querySelectorAll('.gallery-item img'));
+                console.log('Lightbox initialized with ' + allImages.length + ' images');
+            }
+
+            // Open lightbox
+            function openLightbox(index, carouselImages) {
+                if (carouselImages.length === 0) {
+                    console.log('No images found in carousel');
+                    return;
+                }
+                currentCarouselImages = carouselImages;
+                currentImageIndex = Math.max(0, Math.min(index, carouselImages.length - 1));
+                lightboxImage.src = carouselImages[currentImageIndex].src;
+                lightboxModal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                console.log('Lightbox opened at index ' + currentImageIndex);
+            }
+
+            // Close lightbox
+            function closeLightbox() {
+                lightboxModal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+                console.log('Lightbox closed');
+            }
+
+            // Navigate lightbox
+            function previousImage() {
+                currentImageIndex = (currentImageIndex - 1 + currentCarouselImages.length) % currentCarouselImages.length;
+                lightboxImage.src = currentCarouselImages[currentImageIndex].src;
+                console.log('Previous image: ' + currentImageIndex);
+            }
+
+            function nextImage() {
+                currentImageIndex = (currentImageIndex + 1) % currentCarouselImages.length;
+                lightboxImage.src = currentCarouselImages[currentImageIndex].src;
+                console.log('Next image: ' + currentImageIndex);
+            }
+
+            // Add click listeners to all gallery images
+            function attachImageListeners() {
+                document.querySelectorAll('.collaboration-carousel .gallery-item img').forEach((img) => {
+                    img.style.cursor = 'pointer';
+                    img.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        // Get all images in the same carousel
+                        const carousel = this.closest('.collaboration-carousel');
+                        const carouselImages = Array.from(carousel.querySelectorAll('.gallery-item img'));
+                        const index = carouselImages.indexOf(this);
+                        openLightbox(index, carouselImages);
+                    });
+                });
+                console.log('Click listeners attached to gallery images');
+            }
+
+            // Initialize lightbox
+            initLightbox();
+            attachImageListeners();
+
+            // Event listeners
+            if (lightboxClose) {
+                lightboxClose.addEventListener('click', closeLightbox);
+            }
+            if (lightboxPrev) {
+                lightboxPrev.addEventListener('click', previousImage);
+            }
+            if (lightboxNext) {
+                lightboxNext.addEventListener('click', nextImage);
+            }
+
+            // Close on background click
+            if (lightboxModal) {
+                lightboxModal.addEventListener('click', function(e) {
+                    if (e.target === lightboxModal) {
+                        closeLightbox();
+                    }
+                });
+            }
+
+            // Keyboard navigation
+            document.addEventListener('keydown', function(e) {
+                if (lightboxModal && lightboxModal.classList.contains('active')) {
+                    if (e.key === 'Escape') {
+                        e.preventDefault();
+                        closeLightbox();
+                    }
+                    if (e.key === 'ArrowLeft') {
+                        e.preventDefault();
+                        previousImage();
+                    }
+                    if (e.key === 'ArrowRight') {
+                        e.preventDefault();
+                        nextImage();
+                    }
+                }
+            });
+
+            // Mouse wheel scroll for navigating images
+            if (lightboxModal) {
+                lightboxModal.addEventListener('wheel', function(e) {
+                    if (lightboxModal.classList.contains('active')) {
+                        e.preventDefault();
+                        if (e.deltaX > 0 || e.deltaY > 0) {
+                            nextImage();
+                        } else if (e.deltaX < 0 || e.deltaY < 0) {
+                            previousImage();
+                        }
+                    }
+                }, { passive: false });
+            }
+        }
+
+        // Run when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initializeGallery);
+        } else {
+            initializeGallery();
+        }
+    </script>
+</body>
+</html>
